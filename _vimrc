@@ -213,12 +213,12 @@ endif
 
 
 " 设置通用缩进策略 [两空格缩进]
-set shiftwidth=4
-set tabstop=4
+set shiftwidth=2
+set tabstop=2
 
 " 对部分语言设置单独的缩进 [四空格缩进]
-" au FileType c,cpp,java,cs set shiftwidth=4
-" au FileType c,cpp,java,cs set tabstop=4
+ au FileType python set shiftwidth=4
+ au FileType python set tabstop=4
 
 " 根据后缀名指定文件类型
 au BufRead,BufNewFile *.h        setlocal ft=c
@@ -269,6 +269,8 @@ set nowrapscan               " 搜索到文件两端时不重新搜索
 set nocompatible             " 关闭兼容模式
 set hidden                   " 允许在有未保存的修改时切换缓冲区
 set autochdir                " 设定文件浏览器目录为当前目录
+let g:Source="F:/youan/python/000study"
+
 set foldmethod=indent        " 选择代码折叠类型
 set foldlevel=100            " 禁止自动折叠
 set laststatus=2             " 开启状态栏信息
@@ -564,7 +566,16 @@ let g:snipMate.scope_aliases['html']            = 'blaze,html'
 
 " NERDTree            树形文件浏览器
 let g:NERDTreeShowHidden = 1                   " 显示隐藏文件
+let NERDTreeShowLineNumbers=1                   "显示行号"
+"启动时自动打开NERDTree
+autocmd vimenter * NERDTree
+"如果窗口只有NERDTree,关闭VIM
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+"共享NERDTree
+let g:nerdtree_tabs_open_on_console_startup=1
+"显示书签
+let NERDTreeShowBookmarks=1
 " NERD_commenter      注释处理插件
 let NERDSpaceDelims = 1                        " 自动添加前置空格
 
@@ -699,7 +710,7 @@ nmap <leader>bb :Tab /=<cr>
 nmap <leader>bn :Tab /
 
 " \nt                 打开/关闭文件树窗口，在左侧栏显示 [NERDTree插件]
-nmap <leader>nt :NERDTree<cr>
+nmap <F3> :NERDTreeToggle<cr>
 
 " \il                 显示/关闭对齐线 [indentLine插件]
 nmap <leader>il :IndentLinesToggle<cr>
@@ -949,19 +960,14 @@ let g:vimwiki_use_mouse       = 1       " 使用鼠标映射
 let g:vimwiki_valid_html_tags = 'p,a,img,b,i,s,u,sub,sup,br,hr,div,del,code,red,center,left,right,h1,h2,h3,h4,h5,h6,pre,code,script,style,span'
 
 let blog = {}
-if g:isWIN
-    let blog.path          = 'f:/youanan/Files/mysite/wiki/'
-    let blog.path_html     = 'f:/youanan/Files/mysite/html/'
-    let blog.template_path = 'f:/youanan/Files/mysite/templates/'
-else
-    let blog.path          = '~/mysite/wiki/'
-    let blog.path_html     = '~/mysite/html/'
-    let blog.template_path = '~/mysite/templates/'
-endif
-let blog.template_default  = 'site'
-let blog.template_ext      = '.html'
-let blog.auto_export       = 1
+    let blog.path          = 'f:/youan/github/youanan.com/wiki/'
+    let blog.path_html     = 'f:/youan/github/youanan.com/public_html/'
+    let blog.template_path = 'f:/youan/github/youanan.com/templates/'
+    let blog.template_default  = 'site'
+    let blog.template_ext      = '.html'
+    let blog.auto_export       = 1
 let g:vimwiki_list         = [blog]
+let g:vimwiki_valid_html_tags = ''
 
 "＝加载加载自定义工程配置文件"
 if g:isWIN
@@ -992,3 +998,11 @@ function! AutoSetFileHead()
     normal o
     normal o
 endfunc
+
+"===vim-indent-guides.git  config
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_start_level=2
+let g:indent_guides_guide_size=1
+autocmd VimEnter,Colorscheme * :hi IndentGuidesOdd  guibg=black ctermbg=3
+autocmd VimEnter,Colorscheme * :hi IndentGuidesEven guibg=darkgrey ctermbg=4
+
